@@ -11,19 +11,27 @@ import DOMPurify from "dompurify";
 
 const MermaidChart = ({ chart }: { chart: string }) => {
   const chartRef = useRef<HTMLDivElement>(null);
+  const idRef = useRef(`mermaid-${Math.random().toString(36).substring(2, 9)}`);
+  
   useEffect(() => {
+    const id = idRef.current;
     if (chartRef.current) {
-      // Create a unique ID for the mermaid render to avoid collisions
-      const id = `mermaid-${Math.random().toString(36).substring(2, 9)}`;
       mermaid.render(id, chart).then((result) => {
         if (chartRef.current) {
           chartRef.current.innerHTML = DOMPurify.sanitize(result.svg, { USE_PROFILES: { svg: true } });
         }
       }).catch(e => {
-        console.error("Mermaid parsing error:", e);
+        // During streaming, incomplete mermaid syntax throws an error.
+        // Mermaid has a bug where it leaves the error SVG (bomb icon) appended to the body.
+        // We manually remove it here so it doesn't clutter the page.
+        const orphanedError = document.getElementById(id);
+        if (orphanedError) {
+          orphanedError.remove();
+        }
       });
     }
   }, [chart]);
+  
   return <div ref={chartRef} className="flex justify-center my-8 print:my-4" />;
 };
 
