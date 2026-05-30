@@ -18,7 +18,10 @@ const MermaidChart = ({ chart }: { chart: string }) => {
     if (chartRef.current) {
       mermaid.render(id, chart).then((result) => {
         if (chartRef.current) {
-          chartRef.current.innerHTML = DOMPurify.sanitize(result.svg, { USE_PROFILES: { svg: true } });
+          chartRef.current.innerHTML = DOMPurify.sanitize(result.svg, {
+            ADD_TAGS: ['foreignObject', 'style'],
+            ADD_ATTR: ['marker-end', 'marker-start']
+          });
         }
       }).catch(e => {
         // During streaming, incomplete mermaid syntax throws an error.
