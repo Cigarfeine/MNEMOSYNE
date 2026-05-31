@@ -1,4 +1,4 @@
-# Mnemosyne
+# Mnemosyne (assets/hero-screenshot.png)
 
 **Precision PYQ Study Guides**
 
