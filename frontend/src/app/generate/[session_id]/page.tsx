@@ -210,17 +210,23 @@ export default function ProcessingScreen() {
         <div className="flex flex-col gap-6 flex-grow">
           {steps.map((step, idx) => (
             <div key={idx} className="flex items-center gap-4">
-              <div className="w-3 h-3 rounded-full border border-black flex items-center justify-center">
-                 {step.status === "active" && <div className="w-1.5 h-1.5 bg-black rounded-full animate-pulse" />}
-                 {step.status === "complete" && <div className="w-1.5 h-1.5 bg-black rounded-full" />}
-                 {step.status === "error" && <div className="w-1.5 h-1.5 bg-[var(--red)] rounded-full" />}
+              <div className="w-3 h-3 rounded-full border border-black flex items-center justify-center relative">
+                 <div className={`absolute inset-0 m-auto rounded-full transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] ${
+                   step.status === "active" ? "w-1.5 h-1.5 bg-black animate-pulse" :
+                   step.status === "complete" ? "w-1.5 h-1.5 bg-black" :
+                   step.status === "error" ? "w-1.5 h-1.5 bg-[var(--red)]" :
+                   "w-0 h-0 bg-transparent"
+                 }`} />
               </div>
-              <span className={`text-xl md:text-3xl font-bold uppercase tracking-tighter ${
-                step.status === "active" ? "text-black" : 
-                step.status === "complete" ? "text-black opacity-30 line-through" : 
-                step.status === "error" ? "text-[var(--red)]" : "text-black opacity-10"
+              <span className={`relative text-xl md:text-3xl font-bold uppercase tracking-tighter transition-all duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] ${
+                step.status === "active" ? "text-black opacity-100 translate-x-1" : 
+                step.status === "complete" ? "text-black opacity-30 translate-x-0" : 
+                step.status === "error" ? "text-[var(--red)] opacity-100 translate-x-0" : "text-black opacity-10 translate-x-0"
               }`}>
                 {step.name}
+                <div className={`absolute top-1/2 left-0 h-[2px] w-full bg-black origin-left transition-transform duration-[0.8s] ease-[cubic-bezier(0.76,0,0.24,1)] ${
+                  step.status === "complete" ? "scale-x-100" : "scale-x-0"
+                }`} />
               </span>
             </div>
           ))}

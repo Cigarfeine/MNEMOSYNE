@@ -2,8 +2,6 @@
 
 **Precision PYQ Study Guides**
 
-![Mnemosyne Homepage](assets/hero-screenshot.png)
-
 Mnemosyne is a powerful, AI-driven full-stack application that analyzes your Past Year Questions (PYQs) and course notes to generate highly targeted, exam-optimized study guides.
 
 ## Features
